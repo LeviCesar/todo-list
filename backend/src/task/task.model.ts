@@ -15,7 +15,9 @@ export class Task extends Model {
   @Column
   description: string;
 
-  @Column
+  @Column({
+    defaultValue: false,
+  })
   status: boolean;
 
   @ForeignKey(() => User)

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Task } from './task.model';
 import { InjectModel } from '@nestjs/sequelize';
 
@@ -10,7 +10,18 @@ export class TaskService {
   ) {}
 
   async create(userId: string, description: string): Promise<{ id: string }> {
-    return { id: '' };
+    if (userId == null) {
+      throw new BadRequestException("userId can't be empty")
+    }
+
+    if (description == null) {
+      throw new BadRequestException("description can't be empty")
+    }
+
+    return await this.taskModel.create({
+      description,
+      userId
+    });
   }
 
   async findAllByUser(
