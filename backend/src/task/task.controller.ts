@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Request } from '@nestjs/common';
 import { TaskService } from './task.service';
 
 @Controller('task')
@@ -6,28 +6,28 @@ export class TaskController {
     constructor(private taskService: TaskService) {}
 
     @Post()
-    @HttpCode(201)
+    @HttpCode(HttpStatus.CREATED)
     createTask(@Request() req, @Body() taskDto: Record<string, any>) {
-        return this.taskService.createTask(
+        return this.taskService.create(
             req.user.sub,
             taskDto.description,
         );
     }
 
     @Get()
-    @HttpCode(200)
+    @HttpCode(HttpStatus.OK)
     getTaskList(@Request() req) {
-        return this.taskService.getTaskList(req.user.sub)
+        return this.taskService.findAllByUser(req.user.sub)
     }
 
     @Patch(':id/description')
-    @HttpCode(204)
+    @HttpCode(HttpStatus.NO_CONTENT)
     updatedTaskDescription(
         @Request() req,
         @Param('id') id: string,
         @Body() taskDto: Record<string, any>,
     ) {
-        return this.taskService.updateTaskDescription(
+        return this.taskService.updateDescription(
             req.user.sub,
             id,
             taskDto.description,
@@ -35,13 +35,13 @@ export class TaskController {
     }
 
     @Patch(':id/status')
-    @HttpCode(204)
+    @HttpCode(HttpStatus.NO_CONTENT)
     updateTaskStatus(
         @Request() req,
         @Param('id') id: string,
         @Body() taskStatusDto: Record<string, any>,
     ) {
-        return this.taskService.updateTaskStatus(
+        return this.taskService.updateStatus(
             req.user.sub,
             id,
             taskStatusDto.status,
@@ -49,9 +49,9 @@ export class TaskController {
     }
 
     @Delete(':id')
-    @HttpCode(204)
+    @HttpCode(HttpStatus.NO_CONTENT)
     removeTask(@Request() req, @Param('id') id: string) {
-        return this.taskService.removeTask(
+        return this.taskService.remove(
             req.user.sub,
             id,
         )

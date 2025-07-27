@@ -1,4 +1,5 @@
-import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Task } from 'src/task/task.model';
 
 @Table
 export class User extends Model {
@@ -14,4 +15,7 @@ export class User extends Model {
 
   @Column(DataType.BLOB)
   hashPasswd: Buffer;
+  
+  @HasMany(() => Task)
+  tasks: Task[];
 }

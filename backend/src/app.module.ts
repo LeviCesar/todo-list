@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TaskModule } from './task/task.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/user.model';
+import { Task } from './task/task.model';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { User } from './users/user.model';
       synchronize: true,
       models: [
         User,
+        Task,
       ],
     }),
 
