@@ -1,7 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { AccessTokenService } from './access-token.service';
 import { RefreshTokenService } from './refresh-token.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -12,17 +13,21 @@ export class AuthService {
   ) {}
 
   async signIn(
-    username: string,
-    pass: string,
+    email: string,
+    passwd: string,
   ): Promise<{ access_token: string; refresh_token: string }> {
-    const user = await this.usersService.findOne(username);
-    if (user?.password !== pass) {
+    const user = await this.usersService.findOne(email);
+    if (user == null) {
+      throw new NotFoundException("User not found");
+    }
+
+    const isMatch = await bcrypt.compare(passwd, user.hashPasswd.toString());
+    if (!isMatch) {
       throw new UnauthorizedException();
     }
 
     const payload = {
-      sub: user.userId,
-      username: user.username,
+      sub: user.id,
       email: user.email,
     };
 
