@@ -32,14 +32,16 @@ export class AuthService {
     };
   }
 
-//   async refreshSession(
-//     refreshToken: string,
-//   ): Promise<{ access_token: string }> {
-    
-//     refreshToken
-
-//     return {
-//       access_token: await this.jwtService.signAsync(payload),
-//     };
-//   }
+  async refreshSession(
+    refreshToken: string,
+  ): Promise<{ access_token: string }> {
+    const payload = await this.refreshService.verify(refreshToken);
+    return {
+      access_token: await this.accessService.sign({
+        sub: payload.sub,
+        username: payload.username,
+        email: payload.email,
+      }),
+    };
+  }
 }

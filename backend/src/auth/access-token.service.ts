@@ -10,13 +10,21 @@ export class AccessTokenService {
   async sign(payload: any) {
     payload.tokenType = 'at+jwt';
     return this.jwtService.signAsync(payload, {
+      // privateKey: fs.readFileSync(path.resolve(process.env.JWT_REFRESH_PRIVATE_KEY), 'utf-8'),
+      // publicKey: fs.readFileSync(path.resolve(process.env.JWT_REFRESH_PUBLIC_KEY), 'utf-8'),
+      secret: process.env.ACCESS_TOKEN_JWT_SECRET,
+      algorithm: 'HS256',
+      expiresIn: '15m',
       jwtid: uuidv4(),
     });
   }
 
   async verify(token: string) {
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.ACCESS_TOKEN_JWT_SECRET,
+        algorithms: ['HS256'],
+      });
       if (payload.tokenType != 'at+jwt') {
         throw new UnauthorizedException('Invalid token type');
       } 

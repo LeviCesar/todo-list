@@ -21,12 +21,12 @@ export class AuthController {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
-//   @HttpCode(HttpStatus.OK)
-//   @Public()
-//   @Post('refresh')
-//   refreshSession(@Body() sessionDto: Record<string, any>) {
-//     return this.authService.refreshSession(sessionDto.refreshToken);
-//   }
+  @HttpCode(HttpStatus.OK)
+  @Public()
+  @Post('refresh')
+  refreshSession(@Body() sessionDto: Record<string, any>) {
+    return this.authService.refreshSession(sessionDto.refresh);
+  }
 
   @Get('profile')
   getProfile(@Request() req) {
