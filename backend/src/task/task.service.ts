@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './task.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class TaskService {
@@ -47,7 +46,7 @@ export class TaskService {
     description: string,
   ): Promise<{ description: string }> {
     await this.taskModel.update(
-      { description: description },
+      { description },
       {
         where: {
           userId: userId,
@@ -63,8 +62,18 @@ export class TaskService {
     userId: string,
     id: string,
     status: boolean,
-  ): Promise<boolean> {
-    return true;
+  ): Promise<{ status: boolean }> {
+    await this.taskModel.update(
+      { status },
+      {
+        where: {
+          userId: userId,
+          id: id,
+        },
+      },
+    );
+
+    return { status };
   }
 
   async remove(userId: string, id: string): Promise<boolean> {

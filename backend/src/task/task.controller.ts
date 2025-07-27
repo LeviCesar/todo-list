@@ -35,16 +35,16 @@ export class TaskController {
     }
 
     @Patch(':id/status')
-    @HttpCode(HttpStatus.NO_CONTENT)
+    @HttpCode(HttpStatus.OK)
     updateTaskStatus(
         @Request() req,
         @Param('id') id: string,
-        @Body() taskStatusDto: Record<string, any>,
+        @Body() taskDto: Record<string, any>,
     ) {
         return this.taskService.updateStatus(
             req.user.sub,
             id,
-            taskStatusDto.status,
+            taskDto.status,
         );
     }
 
