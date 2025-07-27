@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './task.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class TaskService {
@@ -18,10 +19,12 @@ export class TaskService {
       throw new BadRequestException("description can't be empty")
     }
 
-    return await this.taskModel.create({
+    const user = await this.taskModel.create({
       description,
       userId
     });
+
+    return { id: user.id }
   }
 
   async findAllByUser(
@@ -42,8 +45,18 @@ export class TaskService {
     userId: string,
     id: string,
     description: string,
-  ): Promise<boolean> {
-    return true;
+  ): Promise<{ description: string }> {
+    await this.taskModel.update(
+      { description: description },
+      {
+        where: {
+          userId: userId,
+          id: id,
+        },
+      },
+    );
+
+    return { description };
   }
 
   async updateStatus(

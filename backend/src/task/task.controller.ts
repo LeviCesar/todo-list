@@ -21,7 +21,7 @@ export class TaskController {
     }
 
     @Patch(':id/description')
-    @HttpCode(HttpStatus.NO_CONTENT)
+    @HttpCode(HttpStatus.OK)
     updatedTaskDescription(
         @Request() req,
         @Param('id') id: string,
