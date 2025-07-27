@@ -76,7 +76,16 @@ export class TaskService {
     return { status };
   }
 
-  async remove(userId: string, id: string): Promise<boolean> {
-    return true;
+  async remove(userId: string, id: string): Promise<void> {
+    const status = await this.taskModel.destroy({
+      where: {
+        userId,
+        id,
+      },
+    })
+
+    if (status == 0) {
+      throw new BadRequestException("task not deleted")
+    }
   }
 }
