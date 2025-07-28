@@ -1,1 +1,52 @@
-<p>tasks works!</p>
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4 relative">
+  <button
+    (click)="logout()"
+    class="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2 cursor-pointer"
+  >
+    <span class="material-icons">logout</span>
+    Logout
+  </button>
+
+  <div class="bg-white w-full max-w-md rounded-xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">To-Do List</h2>
+
+    @if (errorMessage) {
+      <div class="text-red-500 mb-2">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="flex gap-2 mb-4">
+      <input
+        [(ngModel)]="newTask"
+        (keydown.enter)="addTask()"
+        type="text"
+        placeholder="Add a task"
+        class="flex-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-400"
+      />
+      <button
+        (click)="addTask()"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
+      >
+        Add
+      </button>
+    </div>
+
+    <ul class="space-y-2">
+      @for (task of tasks; track task.id) {
+        <li class="flex items-center justify-between px-4 py-2 bg-gray-50 rounded-lg shadow-sm">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" [(ngModel)]="task.done" (change)="toggleDone(task.id)" />
+            <span [class.line-through]="task.done" class="text-gray-800">{{ task.text }}</span>
+          </div>
+          <button
+            (click)="deleteTask(task.id)"
+            class="text-red-500 hover:text-red-700 transition"
+          >
+            &times;
+          </button>
+        </li>
+      }
+    </ul>
+  </div>
+</div>
