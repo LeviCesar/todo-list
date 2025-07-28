@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
     <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
-            Entrar na conta
+            Login
         </h2>
 
         <form (ngSubmit)="onSubmit()" novalidate>
@@ -12,10 +12,10 @@
                     class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
                 <small class="text-red-500" if="loginForm.get('email')?.errors?.['required']">
-                    Email é obrigatório
+                    Email required
                 </small>
                 <small class="text-red-500" if="loginForm.get('email')?.errors?.['email']">
-                    Email inválido
+                    Email invalid
                 </small>
             </div>
 
@@ -26,20 +26,20 @@
                     class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
                 <small class="text-red-500" if="loginForm.get('password')?.errors?.['required']">
-                    Senha é obrigatória
+                    Password required
                 </small>
             </div>
 
             <!-- Botão -->
             <button type="submit" [disabled]="loginForm.invalid"
                 class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer">
-                Entrar
+                Login
             </button>
         </form>
 
         <p class="text-sm text-center text-gray-600 mt-4">
-            Ainda não tem uma conta?
-            <a routerLink="/auth/register" class="text-blue-600 hover:underline cursor-pointer">Cadastre-se</a>
+            Don't have an account already?
+            <a routerLink="/auth/register" class="text-blue-600 hover:underline cursor-pointer">Register</a>
         </p>
     </div>
 </div>
