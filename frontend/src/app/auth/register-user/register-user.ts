@@ -1,32 +1,26 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register-user',
-  // imports: [],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+  ],
   templateUrl: './register-user.html',
   styleUrl: './register-user.css',
-  standalone: false,
 })
 export class RegisterUser {
-  registerForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      passwordConfirm: ['', Validators.required],
-    })
-  }
+  registerForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required),
+  });
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const { email, password, passwordConfirm } = this.registerForm.value;
-      if (password != passwordConfirm) {
-        console.error('senhas não dão match')
-      }
-      
-      console.log('New Account:', email, password);
+      const { email, password } = this.registerForm.value;
+      console.log('Login with:', email, password);
       // enviar para serviço de autenticação
     }
   }

@@ -4,33 +4,29 @@
             Login
         </h2>
 
-        <form (ngSubmit)="onSubmit()" novalidate>
-            <!-- Email -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input formControlName="email" type="email"
                     class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
-                <small class="text-red-500" if="loginForm.get('email')?.errors?.['required']">
-                    Email required
-                </small>
-                <small class="text-red-500" if="loginForm.get('email')?.errors?.['email']">
-                    Email invalid
-                </small>
+                @if (loginForm.get('email')?.errors?.['required']) {
+                    <small class="text-red-500">Email required</small>
+                } @else if (loginForm.get('email')?.errors?.['email']) {
+                    <small class="text-red-500">Email invalid</small>
+                }
             </div>
 
-            <!-- Senha -->
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input formControlName="password" type="password"
                     class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
-                <small class="text-red-500" if="loginForm.get('password')?.errors?.['required']">
-                    Password required
-                </small>
+                @if (loginForm.get('password')?.errors?.['required']) {
+                    <small class="text-red-500">Password required</small>
+                }
             </div>
 
-            <!-- Botão -->
             <button type="submit" [disabled]="loginForm.invalid"
                 class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer">
                 Login
