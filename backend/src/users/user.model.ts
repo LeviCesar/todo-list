@@ -1,4 +1,4 @@
-import { Column, DataType, HasMany, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
 import { Task } from 'src/task/task.model';
 
 @Table
@@ -10,6 +10,7 @@ export class User extends Model {
   })
   declare id: string;
 
+  @Unique
   @Column
   email: string;
 

@@ -1,5 +1,5 @@
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.model';
 import * as bcrypt from 'bcrypt';
@@ -15,12 +15,17 @@ export class UsersService {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(password, salt);
 
-    const user = await this.userModel.create({ 
-      email: email, 
-      hashPasswd: hash, 
-    });
+    try {
+      const user = await this.userModel.create({ 
+        email: email, 
+        hashPasswd: hash, 
+      });
 
-    return { id: user.id }
+      return { id: user.id };
+    } catch {
+      throw new ConflictException("user already exist");
+    }
+
   }
 
   async findOne(email: string): Promise<User | null> {

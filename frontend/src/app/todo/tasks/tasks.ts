@@ -23,7 +23,6 @@ export class Tasks {
   constructor(private cdRef: ChangeDetectorRef) {
     this.todoService.getTasks().subscribe({
       next: (response: any) => {
-        console.log(response.tasks);
         this.tasks = response.tasks.map((task: any) => ({
           id: task.id,
           text: task.description,
@@ -66,13 +65,14 @@ export class Tasks {
 
     if (!task) return;
 
-    const updatedStatus = !task.done;
-    this.todoService.statusTask(id, updatedStatus).subscribe({
-      next: () => {
-        task.done = updatedStatus;
+    task.done = !task.done;
+    this.todoService.statusTask(id, !task.done).subscribe({
+      next: (res: any) => {
+        task.done = res.status;
         this.cdRef.detectChanges();
       },
       error: () => {
+        task.done = !task.done;
         this.errorMessage = 'Erro ao atualizar o status da tarefa.';
       }
     });
